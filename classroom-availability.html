@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Class Availability</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .free {
+      background-color: #98fb98;
+    }
+    .booked {
+      background-color: #ffbdbd;
+    }
+    .booking-form {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Class Availability</h1>
+  <select id="block-select">
+    <option value="">Select a block</option>
+    <option value="g-block">G Block</option>
+    <option value="a-block">A Block</option>
+    <option value="j-block">J Block</option>
+  </select>
+  <table id="classroom-table">
+    <thead>
+      <tr>
+        <th>Classroom</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="free">
+        <td>1</td>
+        <td>Free</td>
+        <td>
+          <button class="book-button">Book</button>
+          <div class="booking-form">
+            <label for="booking-name">Name:</label>
+            <input type="text" id="booking-name" />
+            <label for="booking-time">Time:</label>
+            <input type="time" id="booking-time" />
+            <button class="book-submit">Submit</button>
+          </div>
+        </td>
+      </tr>
+      <tr class="booked">
+        <td>2</td>
+        <td>Booked</td>
+        <td>-</td>
+      </tr>
+      </tbody>
+  </table>
+  <script>
+    const blockSelect = document.getElementById("block-select");
+    const classroomTable = document.getElementById("classroom-table");
+    const bookButtons = document.querySelectorAll(".book-button");
+    const bookingForms = document.querySelectorAll(".booking-form");
+    const bookSubmitButtons = document.querySelectorAll(".book-submit");
+
+    // Function to simulate booking a classroom
+    function bookClassroom(classroomElement, name, time) {
+      // Update the class of the classroom element to "booked"
+      classroomElement.classList.add("booked");
+      classroomElement.classList.remove("free");
+      // Update the status cell to "Booked"
+      classroomElement.querySelector("td:nth-child(2)").textContent = "Booked";
+      // Hide the booking form
+      classroomElement.querySelector(".booking-form").style.display = "none";
+      // Display a confirmation message
+      alert(`Classroom ${classroomElement.querySelector("td:nth-child(1)").textContent} booked for ${name} at ${time}`);
+    }
+
+    // Function to show/hide booking forms
+    function toggleBookingForm(classroomElement, bookingForm) {
+      if (bookingForm.style.display === "none") {
+        // Show the booking form
+        bookingForm.style.display = "block";
+      } else {
+        // Hide the booking form
+        bookingForm.style.display = "none";
+      }
+    }
+
+    // Attach event listeners to block select, book buttons, and submit buttons
+    blockSelect.addEventListener("change", () => {
+      // Update classroom table based on selected block (omitted for brevity)
+    });
+
+    bookButtons.forEach((button, index) => {
+      button.addEventListener("click", () => {
+        toggleBookingForm(button.parentNode, bookingForms[index]);
+      });
+    });
+
+    bookSubmitButtons.forEach((button, index) => {
+      button.addEventListener("click", () => {
+        const classroomElement = button.parentNode.parentNode.parentNode;
+        const name = document.getElementById(`booking-name-${index}`).value;
+        const time = document.getElementById(`booking-time-${index}`).value;
+        bookClassroom(classroomElement, name, time);
+      });
+    
